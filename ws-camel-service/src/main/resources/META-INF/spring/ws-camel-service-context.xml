@@ -45,10 +45,10 @@
     <route id="cxfInterfaceToLog">
       <from uri="cxf:bean:greeter?dataFormat=POJO"/>
       <convertBodyTo type="String"/>
-      <log message="SOAP message received : ${body} and operation type : ${in.header.SOAPAction}"/>
       <transform>
-        <simple>Camel route received "${body}"</simple>
+        <simple>${body}(SvCam ${in.header.operationName})</simple>
       </transform>
+      <log message="SvCam ===${body}"/>
     </route>
 
   </camelContext>

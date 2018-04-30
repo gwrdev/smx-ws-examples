@@ -24,19 +24,21 @@ public class ConcreteGreeter implements Greeter {
   private Logger log = LoggerFactory.getLogger(this.getClass());
     
   public void greetMeOneWay(String name) {
-     log.info("Executing operation greetMeOneWay\n");
+     name += "(SvCon greetMeOneWay)";
+     log.info("SvCon ==="+name);
      log.info(greet(name));
   }
 
   public String sayHi(String name) {
-     log.info("Executing operation sayHi\n");
+     name += "(SvCon sayHi)";
+     log.info("SvCon ==="+name);
      return greet(name);
   }
 
-  public String greetMe(String me) {
-     log.info("Executing operation greetMe");
-     log.info("Message received: " + me + "\n");
-     return greet(me);
+  public String greetMe(String name) {
+     name += "(SvCon greetMe)";
+     log.info("SvCon ==="+name);
+     return greet(name);
   }
 
   public void pingMe() throws PingMeFault {
@@ -48,6 +50,6 @@ public class ConcreteGreeter implements Greeter {
   }
 
   private String greet(String name) {
-    return "Hi " + name;
+    return name;
   }
 }

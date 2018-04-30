@@ -27,12 +27,12 @@
       <from uri="timer:foo?period=5000"/>
       <!-- set the action to be triggered -->
       <setHeader headerName="operationName">
-        <constant>greetMe</constant>
+        <constant>sayHi</constant>
       </setHeader>
       <transform>
-        <constant>My Favourite Web Service</constant>
+        <simple>XYZ:${date:now:HH:mm:ss}(Client)</simple>
       </transform>
-      <log message="The message contains ${body}"/>
+      <log message="C-Out ===${body}"/>
       
       <loadBalance>
         <failover roundRobin="true" maximumFailoverAttempts="1"/>
@@ -43,6 +43,8 @@
         <!-- exposed by ws-camel-proxy -->
         <to uri="cxf:http://localhost:9091/greeterProxy?serviceClass=com.fusesource.examples.greeter.Greeter" />
       </loadBalance>
+
+	<log message="C-Ret ===${body}"/>
     </route>
 
   </camelContext>
