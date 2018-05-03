@@ -23,17 +23,28 @@
 
   <camelContext id="com.fusesource.examples.ws-camel-client" xmlns="http://camel.apache.org/schema/spring">
     
-    <route id="periodicGreeter">
-      <from uri="timer:foo?period=5000"/>
-      <!-- set the action to be triggered -->
+    <route id="periodicSayHi">
+      <from uri="timer:foo?period=8000"/>
       <setHeader headerName="operationName">
         <constant>sayHi</constant>
       </setHeader>
+      <to uri="direct:periodicGreeter" />
+    </route>
+
+    <route id="periodicGreetMe">
+      <from uri="timer:foo?period=12000"/>
+      <setHeader headerName="operationName">
+        <constant>greetMe</constant>
+      </setHeader>
+      <to uri="direct:periodicGreeter" />
+    </route>
+
+    <route id="periodicGreeter">
+      <from uri="direct:periodicGreeter" />
       <transform>
         <simple>XYZ:${date:now:HH:mm:ss}(Client)</simple>
       </transform>
       <log message="C-Out ===${body}"/>
-      
       <loadBalance>
         <failover roundRobin="true" maximumFailoverAttempts="1"/>
         <!-- exposed by ws-cxf-service -->
@@ -43,8 +54,7 @@
         <!-- exposed by ws-camel-proxy -->
         <to uri="cxf:http://localhost:9091/greeterProxy?serviceClass=com.fusesource.examples.greeter.Greeter" />
       </loadBalance>
-
-	<log message="C-Ret ===${body}"/>
+      <log message="C-Ret ===${body}"/>
     </route>
 
   </camelContext>

@@ -38,8 +38,33 @@
       <transform>
 	<simple>${body}(ProxyI ${in.header.operationName})</simple>
       </transform>
+      <choice>
+        <when>
+          <simple>${in.header.operationName} == 'sayHi'</simple>
+          <to uri="direct:sayHi" />
+        </when>
+        <when>
+          <simple>${in.header.operationName} == 'greetMe'</simple>
+          <to uri="direct:greetMe" />
+        </when>
+        <otherwise>
+          <log message="===XYZ What!!!!!!!" />
+        </otherwise>
+      </choice>
+    </route>
+
+    <route id ="sayHi">
+      <from uri="direct:sayHi" />
       <log message="Proxy ===${body}"/>
-      <!-- exposed by ws-cxf-service -->
+      <to uri="cxf:http://localhost:9090/greeter?serviceClass=com.fusesource.examples.greeter.Greeter" />
+      <transform>
+	<simple>${body}(ProxyO ${in.header.operationName})</simple>
+      </transform>
+    </route>
+
+    <route id="greetMe">
+      <from uri="direct:greetMe" />
+      <log message="Proxy ===${body}"/>
       <to uri="cxf:http://localhost:9090/greeter?serviceClass=com.fusesource.examples.greeter.Greeter" />
       <transform>
 	<simple>${body}(ProxyO ${in.header.operationName})</simple>
